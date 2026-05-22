@@ -20,7 +20,7 @@
 - **Beautiful Character Cards** — With real artwork previews (Takanashi Hoshino, Sorasaki Hina, Misono Mika, etc.)
 - **Powerful Search & Navigation** — Full-text search + sidebar quick navigation
 - **Stunning UI** — Glassmorphism design with animated WebGL background
-- **Multi-language** — Chinese (Simplified & Traditional) + English
+- **Multi-language** — 中文 (简体 & 繁體) + English
 
 ---
 
