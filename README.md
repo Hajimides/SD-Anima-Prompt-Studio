@@ -1,7 +1,7 @@
 # 🎨 SD-Anima-Prompt-Studio
 
 > A beautiful glassmorphism web UI for building Stable Diffusion & Anima prompts  
-> Features NSFW mode, WebGL animated background, smart prompt composition, and multi-language support
+> Features NSFW mode framework, WebGL animated background, smart prompt composition, and multi-language support
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub Stars](https://img.shields.io/github/stars/Hajimides/SD-Anima-Prompt-Studio?style=social)](https://github.com/Hajimides/SD-Anima-Prompt-Studio/stargazers)
@@ -14,7 +14,7 @@
 
 - **12+ Prompt Categories** — Quality, Style, Character, Clothing, Action (Tag & Natural Language), Perspective, Composition, Background, and more
 - **Smart Mutual Exclusion** — Automatically prevents conflicts between Action Tags and Natural Language descriptions
-- **NSFW Mode** — 18+ confirmation required with strict safety clauses
+- **NSFW Mode Ready** — Complete 18+ confirmation modal with strict safety clauses (full NSFW prompt library will be added in future updates)
 - **Dual Mode Support** — Switch between SD and Anima (auto-adds Anima prefix)
 - **Real-time Prompt Builder** — Live preview, character count, one-click copy, and shuffle
 - **Beautiful Character Cards** — With real artwork previews (Takanashi Hoshino, Sorasaki Hina, Misono Mika, etc.)
