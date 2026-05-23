@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt Studio v14 — Stable Diffusion / Anima</title>
+<title>Prompt Studio</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
@@ -642,14 +642,28 @@ input[type="range"]::-webkit-slider-thumb {
             {id:3,name:{'zh-CN':'超清细节','zh-TW':'超清細節','en':'Ultra HD Detail'},texts:['8k resolution','sharp focus','intricate details','ray tracing']},
             {id:4,name:{'zh-CN':'专业摄影','zh-TW':'專業攝影','en':'Pro Photography'},texts:['professional photography','studio lighting','depth of field','bokeh']},
             {id:5,name:{'zh-CN':'梦幻氛围','zh-TW':'夢幻氛圍','en':'Dreamy Atmosphere'},texts:['soft lighting','ethereal','magical atmosphere']},
-            {id:6,name:{'zh-CN':'极致光影','zh-TW':'極致光影','en':'Ultimate Lighting'},texts:['dramatic rim lighting','god rays','volumetric god rays','cinematic god rays','subsurface scattering']}
+            {id:6,name:{'zh-CN':'极致光影','zh-TW':'極致光影','en':'Ultimate Lighting'},texts:['dramatic rim lighting','god rays','volumetric god rays','cinematic god rays','subsurface scattering']},
+            {id:7,name:{'zh-CN':'极致细节','zh-TW':'極致細節','en':'Ultimate Detail'},texts:['extremely detailed','intricate details','finely crafted details','masterful micro-details','hyper-detailed']},
+            {id:8,name:{'zh-CN':'锐利焦点','zh-TW':'銳利焦點','en':'Sharp Focus'},texts:['sharp focus','crisp and clear','pin sharp','high definition focus','razor sharp details']},
+            {id:9,name:{'zh-CN':'丰富色彩层次','zh-TW':'豐富色彩層次','en':'Rich Color Grading'},texts:['vibrant color grading','rich saturated colors','beautiful color harmony','cinematic color palette','vivid yet natural tones']},
+            {id:10,name:{'zh-CN':'光线追踪效果','zh-TW':'光線追蹤效果','en':'Ray Tracing'},texts:['ray tracing','global illumination','accurate reflections','realistic light bounce','physically based rendering']},
+            {id:11,name:{'zh-CN':'次表面散射','zh-TW':'次表面散射','en':'Subsurface Scattering'},texts:['subsurface scattering','skin translucency','soft light penetration','realistic skin rendering','glowing skin effect']},
+            {id:12,name:{'zh-CN':'高动态范围','zh-TW':'高動態範圍','en':'High Dynamic Range'},texts:['high dynamic range','hdr lighting','detailed highlights and shadows','wide tonal range','dramatic contrast']},
+            {id:13,name:{'zh-CN':'艺术级渲染','zh-TW':'藝術級渲染','en':'Artistic Render'},texts:['artistic rendering','studio quality render','professional illustration','award-winning art style','flawless execution']},
+            {id:14,name:{'zh-CN':'顶级画质','zh-TW':'頂級畫質','en':'Top-tier Quality'},texts:['best quality','masterpiece quality','flawless rendering','premium illustration quality','competition level quality']},
+            {id:15,name:{'zh-CN':'动态光影','zh-TW':'動態光影','en':'Dynamic Lighting'},texts:['dynamic lighting','volumetric god rays','dramatic rim lighting','cinematic light shafts','atmospheric lighting']}
         ],
         style:[
             {id:1,name:{'zh-CN':'动漫风格','zh-TW':'動漫風格','en':'Anime Style'},texts:['anime style','cel shading','vibrant colors','expressive eyes']},
             {id:2,name:{'zh-CN':'赛博朋克','zh-TW':'賽博朋克','en':'Cyberpunk'},texts:['cyberpunk style','neon lights','futuristic cityscape','techwear fashion']},
             {id:3,name:{'zh-CN':'复古像素艺术','zh-TW':'復古像素藝術','en':'Retro Pixel Art'},texts:['pixel art style','8-bit graphics','limited color palette','blocky pixels']},
             {id:4,name:{'zh-CN':'水彩画风格','zh-TW':'水彩畫風格','en':'Watercolor Style'},texts:['watercolor painting style','soft brush strokes','blended colors','paper texture']},
-            {id:5,name:{'zh-CN':'超现实主义','zh-TW':'超現實主義','en':'Surrealism'},texts:['surrealistic style','dreamlike imagery','unexpected juxtapositions']}
+            {id:5,name:{'zh-CN':'超现实主义','zh-TW':'超現實主義','en':'Surrealism'},texts:['surrealistic style','dreamlike imagery','unexpected juxtapositions']},
+            {id:6,name:{'zh-CN':'写实风格','zh-TW':'寫實風格','en':'Realistic Style'},texts:['realistic style','photorealistic','highly detailed skin texture','lifelike rendering','cinematic realism']},
+            {id:7,name:{'zh-CN':'吉卜力风格','zh-TW':'吉卜力風格','en':'Studio Ghibli Style'},texts:['studio ghibli style','soft watercolor aesthetic','whimsical atmosphere','detailed background art','hayao miyazaki inspired']},
+            {id:8,name:{'zh-CN':'新海诚风格','zh-TW':'新海誠風格','en':'Makoto Shinkai Style'},texts:['makoto shinkai style','beautiful sky and clouds','detailed light rays','emotional atmosphere','stunning background scenery']},
+            {id:9,name:{'zh-CN':'半写实风格','zh-TW':'半寫實風格','en':'Semi-Realistic'},texts:['semi-realistic style','detailed yet stylized','soft shading','beautiful proportions','anime-realism hybrid']},
+            {id:10,name:{'zh-CN':'卡通风格','zh-TW':'卡通風格','en':'Cartoon Style'},texts:['cartoon style','bold outlines','flat colors','exaggerated features','clean animation look']}
         ],
         character:[
             {id:1,name:{'zh-CN':'小鸟游星野','zh-TW':'小鳥遊星野','en':'Takanashi Hoshino'},texts:['Takanashi Hoshino','long pink hair','ahoge','prominent cowlick','heterochromia','blue left eye','orange right eye','small cute fang','purple halo'],imageUrl:'https://raw.githubusercontent.com/Hajimides/SD-Anima-Prompt-Studio/main/images/Takanashi_Hoshino.jpg'},
@@ -689,28 +703,48 @@ input[type="range"]::-webkit-slider-thumb {
             {id:2,name:{'zh-CN':'坐姿优雅','zh-TW':'坐姿優雅','en':'Sitting Elegantly'},texts:['sitting elegantly','hands on hips']},
             {id:3,name:{'zh-CN':'动态姿势','zh-TW':'動態姿勢','en':'Dynamic Pose'},texts:['dynamic pose','confident expression']},
             {id:4,name:{'zh-CN':'温柔微笑','zh-TW':'溫柔微笑','en':'Gentle Smile'},texts:['gentle smile','upper body']},
-            {id:5,name:{'zh-CN':'行走姿态','zh-TW':'行走姿態','en':'Walking'},texts:['walking','arms crossed']}
+            {id:5,name:{'zh-CN':'行走姿态','zh-TW':'行走姿態','en':'Walking'},texts:['walking','arms crossed']},
+            {id:6,name:{'zh-CN':'双手叉腰','zh-TW':'雙手叉腰','en':'Hands on Hips'},texts:['hands on hips','confident pose','standing tall','powerful stance','looking at viewer']},
+            {id:7,name:{'zh-CN':'回头凝视','zh-TW':'回頭凝視','en':'Looking Back'},texts:['looking back over shoulder','gentle smile','hair flowing','soft expression','eye contact']},
+            {id:8,name:{'zh-CN':'头发飘动','zh-TW':'頭髮飄動','en':'Hair Flowing'},texts:['hair flowing in wind','dynamic hair','wind effect','hair strands floating','natural movement']},
+            {id:9,name:{'zh-CN':'双手背后','zh-TW':'雙手背後','en':'Hands Behind Back'},texts:['hands behind back','relaxed pose','gentle smile','leaning slightly forward','innocent expression']},
+            {id:10,name:{'zh-CN':'微微前倾','zh-TW':'微微前傾','en':'Leaning Forward'},texts:['leaning forward slightly','curious expression','hands on knees','intimate distance','soft smile']}
         ],
         actionNatural:[
             {id:1,name:{'zh-CN':'自然站立','zh-TW':'自然站立','en':'Standing Naturally'},texts:['standing naturally in a serene environment','soft breeze blowing through hair','relaxed and graceful posture']},
             {id:2,name:{'zh-CN':'优雅端坐','zh-TW':'優雅端坐','en':'Seated Elegantly'},texts:['sitting gracefully on an ornate velvet chair','hands folded neatly on the lap','poised and refined demeanor']},
             {id:3,name:{'zh-CN':'回眸凝望','zh-TW':'回眸凝望','en':'Glancing Back'},texts:['looking back over the shoulder','gentle smile with sparkling eyes','hair swaying gently in motion']},
             {id:4,name:{'zh-CN':'沉思静立','zh-TW':'沉思靜立','en':'Pensive Standing'},texts:['lost in deep thought','gazing into the far distance','hand resting gently on the chin']},
-            {id:5,name:{'zh-CN':'轻盈跃动','zh-TW':'輕盈躍動','en':'Light Leap'},texts:['caught mid-leap with arms spread wide','hair floating upward','expression full of joy and vitality']}
+            {id:5,name:{'zh-CN':'轻盈跃动','zh-TW':'輕盈躍動','en':'Light Leap'},texts:['caught mid-leap with arms spread wide','hair floating upward','expression full of joy and vitality']},
+            {id:6,name:{'zh-CN':'轻轻抚摸长发','zh-TW':'輕輕撫摸長髮','en':'Gently Touching Hair'},texts:['gently running fingers through long hair','soft and elegant movement','looking down shyly','hair cascading over shoulder','delicate hand gesture']},
+            {id:7,name:{'zh-CN':'靠在窗边沉思','zh-TW':'靠在窗邊沉思','en':'Leaning on Window Deep in Thought'},texts:['leaning against the window frame','gazing into the distance','soft natural light on face','peaceful and contemplative expression','one hand resting on the glass']},
+            {id:8,name:{'zh-CN':'漫步在花海中','zh-TW':'漫步在花海中','en':'Walking Through Flower Field'},texts:['walking gracefully through a field of flowers','petals gently falling around her','soft smile with eyes closed','dress flowing in the breeze','peaceful and dreamy atmosphere']},
+            {id:9,name:{'zh-CN':'坐在窗台上看风景','zh-TW':'坐在窗臺上看風景','en':'Sitting on Windowsill Watching Scenery'},texts:['sitting elegantly on the windowsill','legs gently crossed','looking outside with a gentle smile','sunlight illuminating her face','calm and serene moment']},
+            {id:10,name:{'zh-CN':'伸展身体放松','zh-TW':'伸展身體放鬆','en':'Stretching Body Relaxed'},texts:['stretching arms above head','body arched gracefully','eyes closed in relaxation','soft morning light','peaceful and natural pose']}
         ],
         perspective:[
             {id:1,name:{'zh-CN':'低角度','zh-TW':'低角度','en':'Low Angle'},texts:['low angle shot','from below','dramatic low angle','looking up']},
             {id:2,name:{'zh-CN':'高角度','zh-TW':'高角度','en':'High Angle'},texts:['high angle','bird eye view','top down view','looking down']},
             {id:3,name:{'zh-CN':'平视角度','zh-TW':'平視角度','en':'Eye Level'},texts:['eye level shot','straight on','frontal view','direct gaze']},
             {id:4,name:{'zh-CN':'仰视特写','zh-TW':'仰視特寫','en':"Worm's Eye"},texts:["worm's eye view",'extreme low angle','looking up from ground','hero perspective']},
-            {id:5,name:{'zh-CN':'俯视全景','zh-TW':'俯視全景','en':'Aerial View'},texts:['aerial view','overlooking shot','drone perspective','panoramic view from above']}
+            {id:5,name:{'zh-CN':'俯视全景','zh-TW':'俯視全景','en':'Aerial View'},texts:['aerial view','overlooking shot','drone perspective','panoramic view from above']},
+            {id:6,name:{'zh-CN':'三分之二视角','zh-TW':'三分之二視角','en':'Three-quarter View'},texts:['three-quarter view','dynamic angle','showing both face and body','natural perspective','flattering angle']},
+            {id:7,name:{'zh-CN':'过肩视角','zh-TW':'過肩視角','en':'Over the Shoulder'},texts:['over the shoulder shot','looking back at viewer','intimate perspective','soft focus on background','emotional connection']},
+            {id:8,name:{'zh-CN':'特写镜头','zh-TW':'特寫鏡頭','en':'Close-up Shot'},texts:['extreme close-up','detailed face','focus on eyes and expression','shallow depth of field','intimate portrait']},
+            {id:9,name:{'zh-CN':'广角全景','zh-TW':'廣角全景','en':'Wide Angle Shot'},texts:['wide angle shot','showing full environment','dramatic perspective','expansive view','cinematic wide shot']},
+            {id:10,name:{'zh-CN':'荷兰角倾斜','zh-TW':'荷蘭角傾斜','en':'Dutch Angle'},texts:['dutch angle','dynamic tilted composition','sense of unease or energy','creative perspective','dramatic framing']}
         ],
         composition:[
             {id:1,name:{'zh-CN':'居中构图','zh-TW':'居中構圖','en':'Centered'},texts:['centered composition','subject in the middle','symmetrical framing','balanced central focus']},
             {id:2,name:{'zh-CN':'三分法则','zh-TW':'三分法則','en':'Rule of Thirds'},texts:['rule of thirds','off-center placement','balanced asymmetry','subject placed on third line']},
             {id:3,name:{'zh-CN':'引导线','zh-TW':'引導線','en':'Leading Lines'},texts:['leading lines','converging lines','depth through perspective','lines drawing eye to subject']},
             {id:4,name:{'zh-CN':'框架构图','zh-TW':'框架構圖','en':'Framed'},texts:['framed composition','natural frame around subject','looking through a window','foreground framing']},
-            {id:5,name:{'zh-CN':'对角线','zh-TW':'對角線','en':'Diagonal'},texts:['diagonal composition','dynamic angle','dutch angle tilt','tilted frame for energy']}
+            {id:5,name:{'zh-CN':'对角线','zh-TW':'對角線','en':'Diagonal'},texts:['diagonal composition','dynamic angle','dutch angle tilt','tilted frame for energy']},
+            {id:6,name:{'zh-CN':'负空间构图','zh-TW':'負空間構圖','en':'Negative Space'},texts:['negative space composition','subject off-center','empty space for breathing room','minimalist feel','artistic balance']},
+            {id:7,name:{'zh-CN':'对称构图','zh-TW':'對稱構圖','en':'Symmetrical Composition'},texts:['perfect symmetry','mirrored composition','balanced and harmonious','centered subject','formal and elegant']},
+            {id:8,name:{'zh-CN':'黄金分割','zh-TW':'黃金分割','en':'Golden Ratio'},texts:['golden ratio composition','fibonacci spiral','naturally pleasing placement','organic balance','professional photography rule']},
+            {id:9,name:{'zh-CN':'景深效果','zh-TW':'景深效果','en':'Depth of Field'},texts:['shallow depth of field','beautiful bokeh','subject in sharp focus','blurred background','cinematic separation']},
+            {id:10,name:{'zh-CN':'剪影构图','zh-TW':'剪影構圖','en':'Silhouette Composition'},texts:['strong silhouette','backlit subject','dramatic outline','minimal detail','powerful visual impact']}
         ],
         background:[
             {id:1,name:{'zh-CN':'城市夜景','zh-TW':'城市夜景','en':'Cyberpunk Night City'},texts:['cyberpunk cityscape at night','neon-lit skyscrapers reflecting on wet streets','futuristic metropolis with holographic billboards','rain-slicked asphalt glowing with neon reflections','aerial view of sprawling night city with flying vehicles','dense urban canyon of glass and steel under purple night sky','cyberpunk alleyway with neon signs and steam vents']},
@@ -724,24 +758,24 @@ input[type="range"]::-webkit-slider-thumb {
         ],
         nsfwClothing:[
             {id:1,name:{'zh-CN':'白色Babydoll内衣','zh-TW':'白色Babydoll内衣','en':'White Babydoll Lingerie'},texts:['delicate white sheer babydoll lingerie set','intricate floral lace trim','thin adjustable spaghetti straps','semi-transparent flowing fabric','matching lace panties']},
-            {id:2,name:{'zh-CN':'b','zh-TW':'b','en':'b'},texts:['1','2','3','4']},
-            {id:3,name:{'zh-CN':'c','zh-TW':'c','en':'c'},texts:['1','2','3','4']},
-            {id:4,name:{'zh-CN':'d','zh-TW':'d','en':'d'},texts:['1','2','3','4']},
-            {id:5,name:{'zh-CN':'e','zh-TW':'e','en':'e'},texts:['1','2','3','4']}
+            {id:2,name:{'zh-CN':'黑色蕾丝连体衣','zh-TW':'黑色蕾絲連體衣','en':'Black Lace Bodysuit'},texts:['sheer black lace bodysuit','deep plunging neckline','high-cut legs','intricate floral lace pattern','crotchless design']},
+            {id:3,name:{'zh-CN':'红色微型比基尼','zh-TW':'紅色微型比基尼','en':'Red Micro Bikini'},texts:['tiny red string micro bikini','minimal coverage','side-tie bottoms','triangle top','glossy wet look fabric']},
+            {id:4,name:{'zh-CN':'白色吊带丝袜与吊袜带','zh-TW':'白色吊帶絲襪與吊襪帶','en':'White Thighhighs with Garter Belt'},texts:['sheer white thighhigh stockings','black lace garter belt','bow details','silky smooth texture','suspender straps']},
+            {id:5,name:{'zh-CN':'透明睡裙','zh-TW':'透明睡裙','en':'Sheer Nightgown'},texts:['completely sheer white nightgown','see-through fabric','delicate lace hem','long flowing sleeves','nothing underneath']}
         ],
         nsfwActionTag:[
-            {id:1,name:{'zh-CN':'a','zh-TW':'a','en':'a'},texts:['1','2','3','4']},
-            {id:2,name:{'zh-CN':'b','zh-TW':'b','en':'b'},texts:['1','2','3','4']},
-            {id:3,name:{'zh-CN':'c','zh-TW':'c','en':'c'},texts:['1','2','3','4']},
-            {id:4,name:{'zh-CN':'d','zh-TW':'d','en':'d'},texts:['1','2','3','4']},
-            {id:5,name:{'zh-CN':'e','zh-TW':'e','en':'e'},texts:['1','2','3','4']}
+            {id:1,name:{'zh-CN':'诱惑姿势','zh-TW':'誘惑姿勢','en':'Seductive Pose'},texts:['seductive pose','hand on breast','arching back','looking at viewer with bedroom eyes','parted lips']},
+            {id:2,name:{'zh-CN':'双腿分开','zh-TW':'雙腿分開','en':'Legs Spread'},texts:['legs spread wide','knees bent','exposed','inviting pose','full body view']},
+            {id:3,name:{'zh-CN':'ahegao表情','zh-TW':'ahegao表情','en':'Ahegao Face'},texts:['ahegao','tongue out','crossed eyes','blushing heavily','heart-shaped pupils']},
+            {id:4,name:{'zh-CN':'跪姿后入','zh-TW':'跪姿後入','en':'Doggy Style Pose'},texts:['on all fours','doggy style position','looking back','raised hips','arched back']},
+            {id:5,name:{'zh-CN':'自慰姿势','zh-TW':'自慰姿勢','en':'Masturbation Pose'},texts:['fingers between legs','touching self','moaning expression','one hand on chest','legs trembling']}
         ],
         nsfwActionNatural:[
-            {id:1,name:{'zh-CN':'a','zh-TW':'a','en':'a'},texts:['1','2','3','4']},
-            {id:2,name:{'zh-CN':'b','zh-TW':'b','en':'b'},texts:['1','2','3','4']},
-            {id:3,name:{'zh-CN':'c','zh-TW':'c','en':'c'},texts:['1','2','3','4']},
-            {id:4,name:{'zh-CN':'d','zh-TW':'d','en':'d'},texts:['1','2','3','4']},
-            {id:5,name:{'zh-CN':'e','zh-TW':'e','en':'e'},texts:['1','2','3','4']}
+            {id:1,name:{'zh-CN':'躺在床上诱惑地看着你','zh-TW':'躺在床上誘惑地看著你','en':'Lying on bed seductively looking at you'},texts:['lying on her back on luxurious silk sheets','legs slightly parted','one arm raised above head','gently biting lower lip','inviting gaze directly at viewer']},
+            {id:2,name:{'zh-CN':'跪在地板上双手撑地','zh-TW':'跪在地板上雙手撐地','en':'Kneeling on floor with hands on ground'},texts:['kneeling on all fours on the soft carpet','back arched deeply','hips raised high','looking over shoulder with flushed cheeks','hair cascading down']},
+            {id:3,name:{'zh-CN':'坐在椅子上张开双腿','zh-TW':'坐在椅子上張開雙腿','en':'Sitting on chair with legs spread'},texts:['sitting on the edge of a velvet chair','thighs spread wide apart','hands resting on knees','upper body leaning forward slightly','playful yet lustful expression']},
+            {id:4,name:{'zh-CN':'靠在墙上双手举起','zh-TW':'靠在牆上雙手舉起','en':'Leaning against wall with arms raised'},texts:['leaning back against the cold wall','arms stretched above head','wrists crossed','chest thrust forward','eyes half-closed in pleasure']},
+            {id:5,name:{'zh-CN':'在床上爬行靠近','zh-TW':'在床上爬行靠近','en':'Crawling towards you on the bed'},texts:['crawling slowly towards the viewer on the large bed','seductive smile','hips swaying side to side','long hair dragging on sheets','hungry look in eyes']}
         ]
     };
 
