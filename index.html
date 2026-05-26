@@ -346,12 +346,15 @@ input[type="range"]::-webkit-slider-thumb {
             <div class="border-t border-white/5 p-4 space-y-3">
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <h3 class="text-sm font-bold text-zinc-300" id="label_prompt">组合后的 Prompt</h3>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-bold text-zinc-300" id="label_prompt">组合后的 Prompt</h3>
+                            <button id="regenPromptBtn" class="hidden px-2 py-0.5 text-[10px] rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-zinc-200 transition-all" title="从当前已选组重新生成提示词（覆盖手动编辑）">↺ 刷新</button>
+                        </div>
                         <span id="charCount" class="text-[11px] text-zinc-500 bg-white/5 px-2 py-0.5 rounded-full">0 字符</span>
                     </div>
-                    <textarea id="promptOutput" readonly
+                    <textarea id="promptOutput"
                               class="w-full h-28 p-3.5 glass rounded-2xl text-zinc-200 text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all placeholder:text-zinc-600"
-                              placeholder="尚未选择任何提示词…"></textarea>
+                              placeholder="可直接编辑提示词，修改后选择变化不再自动覆盖…"></textarea>
                 </div>
                 <div class="flex gap-2.5">
                     <button id="copyBtn" class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-600 text-white font-semibold rounded-2xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-200 text-sm">
@@ -529,7 +532,7 @@ input[type="range"]::-webkit-slider-thumb {
             label_selectedGroups:'已选择提示词组', label_prompt:'组合后的 Prompt', label_clearAll:'清空所有', label_copy:'复制 Prompt', label_shuffle:'随机排序',
             label_nsfw:'NSFW', label_nsfwOn:'NSFW 已开启',
             badge_groups:'组', badge_words:'词', badge_chars:'字符',
-            hint_emptyRight:'👈 从左侧选择提示词组', hint_emptyPrompt:'尚未选择任何提示词…',
+            hint_emptyRight:'👈 从左侧选择提示词组', hint_emptyPrompt:'可直接编辑提示词，修改后选择变化不再自动覆盖…',
             hint_footer:'', hint_imageReplace:'💡 替换图片链接即可自定义人物卡片封面',
             search_placeholder:'搜索提示词或人物…', search_noResults:'没有找到匹配的结果',
             mode_sd:'SD', mode_anima:'Anima', animaPrefix:'score_9, score_8_up, score_7_up, anime style, ',
@@ -562,7 +565,7 @@ input[type="range"]::-webkit-slider-thumb {
             label_selectedGroups:'已選擇提示詞組', label_prompt:'組合後的 Prompt', label_clearAll:'清空所有', label_copy:'複製 Prompt', label_shuffle:'隨機排序',
             label_nsfw:'NSFW', label_nsfwOn:'NSFW 已開啟',
             badge_groups:'組', badge_words:'詞', badge_chars:'字元',
-            hint_emptyRight:'👈 從左側選擇提示詞組', hint_emptyPrompt:'尚未選擇任何提示詞…',
+            hint_emptyRight:'👈 從左側選擇提示詞組', hint_emptyPrompt:'可直接編輯提示詞，修改後選擇變化不再自動覆蓋…',
             hint_footer:'', hint_imageReplace:'💡 替換圖片連結即可自訂人物卡片封面',
             search_placeholder:'搜尋提示詞或人物…', search_noResults:'沒有找到匹配的結果',
             mode_sd:'SD', mode_anima:'Anima', animaPrefix:'score_9, score_8_up, score_7_up, anime style, ',
@@ -595,7 +598,7 @@ input[type="range"]::-webkit-slider-thumb {
             label_selectedGroups:'Selected Groups', label_prompt:'Combined Prompt', label_clearAll:'Clear All', label_copy:'Copy Prompt', label_shuffle:'Shuffle',
             label_nsfw:'NSFW', label_nsfwOn:'NSFW On',
             badge_groups:'groups', badge_words:'words', badge_chars:'chars',
-            hint_emptyRight:'👈 Select prompt groups from the left', hint_emptyPrompt:'No prompts selected yet…',
+            hint_emptyRight:'👈 Select prompt groups from the left', hint_emptyPrompt:'Editable: manual changes are preserved until you click ↺ Refresh or Shuffle',
             hint_footer:'', hint_imageReplace:'💡 Replace image URLs to customize character card covers',
             search_placeholder:'Search prompts or characters…', search_noResults:'No matching results found',
             mode_sd:'SD', mode_anima:'Anima', animaPrefix:'score_9, score_8_up, score_7_up, anime style, ',
@@ -910,6 +913,7 @@ input[type="range"]::-webkit-slider-thumb {
         clearAllBtn: $('#clearAllBtn'),
         promptOutput: $('#promptOutput'),
         charCount: $('#charCount'),
+        regenPromptBtn: $('#regenPromptBtn'),
         copyBtn: $('#copyBtn'),
         shuffleBtn: $('#shuffleBtn'),
         modeToggle: $('#modeToggle'),
@@ -930,6 +934,10 @@ input[type="range"]::-webkit-slider-thumb {
         settingsShimmerLabel: $('#settingsShimmerLabel'),
         settingsShimmerHint: $('#settingsShimmerHint')
     };
+
+    // Guard for protecting user manual edits in the prompt textarea
+    var lastAutoPrompt = '';
+    var promptIsCustom = false;
 
     // ==================== Utils ====================
     function getGroupData(cat, id) { return promptLibrary[cat].find(function(g) { return g.id === id; }); }
@@ -1214,10 +1222,24 @@ input[type="range"]::-webkit-slider-thumb {
         return prompt;
     }
 
-    function renderPrompt(shuffleAll) {
+    function renderPrompt(shuffleAll, forceOverwrite) {
         var prompt = composePrompt(!!shuffleAll);
-        dom.promptOutput.value = prompt;
-        dom.charCount.textContent = prompt.length + ' ' + t('badge_chars');
+        lastAutoPrompt = prompt;
+        if (forceOverwrite || !promptIsCustom || dom.promptOutput.value.trim() === '') {
+            dom.promptOutput.value = prompt;
+            promptIsCustom = false;
+        }
+        dom.charCount.textContent = dom.promptOutput.value.length + ' ' + t('badge_chars');
+        updateRegenBtn();
+    }
+
+    function updateRegenBtn() {
+        if (!dom.regenPromptBtn) return;
+        if (promptIsCustom && dom.promptOutput.value.trim() !== '') {
+            dom.regenPromptBtn.classList.remove('hidden');
+        } else {
+            dom.regenPromptBtn.classList.add('hidden');
+        }
     }
 
     // ================================================================
@@ -1462,6 +1484,11 @@ input[type="range"]::-webkit-slider-thumb {
         for (var j = 0; j < allSelected.length; j++) {
             patchCardVisual(allSelected[j].category, allSelected[j].id);
         }
+        // Force clear the prompt output and reset custom edit flag
+        lastAutoPrompt = '';
+        promptIsCustom = false;
+        dom.promptOutput.value = '';
+        dom.charCount.textContent = '0 ' + t('badge_chars');
         lightRefresh();
     }
 
@@ -1470,9 +1497,9 @@ input[type="range"]::-webkit-slider-thumb {
         try { await copyToClipboard(prompt); dom.copyBtn.classList.add('copy-pulse-v10'); setTimeout(function(){dom.copyBtn.classList.remove('copy-pulse-v10');},700); } catch(e) {}
     }
 
-    function handleShuffle() { if (getTotalGroups() === 0) return; state.shuffled = true; renderPrompt(true); }
+    function handleShuffle() { if (getTotalGroups() === 0) return; state.shuffled = true; renderPrompt(true, true); }
 
-    function toggleMode(mode) { if (state.mode === mode) return; state.mode = mode; renderPrompt(state.shuffled); updateModeUI(); saveState(); }
+    function toggleMode(mode) { if (state.mode === mode) return; state.mode = mode; renderPrompt(state.shuffled, true); updateModeUI(); saveState(); }
 
     function switchLang(lang) { if (state.lang === lang) return; state.lang = lang; document.documentElement.lang = lang==='zh-TW'?'zh-TW':lang==='en'?'en':'zh-CN'; refreshUI(); }
 
@@ -1540,6 +1567,21 @@ input[type="range"]::-webkit-slider-thumb {
         // Search
         dom.searchInput.addEventListener('input', handleSearchInput);
         dom.searchClearBtn.addEventListener('click', clearSearch);
+
+        // ========== Prompt textarea: allow direct editing + protect from auto-overwrite ==========
+        // Live char count + detect manual customization (guard in renderPrompt)
+        dom.promptOutput.addEventListener('input', function() {
+            dom.charCount.textContent = this.value.length + ' ' + t('badge_chars');
+            promptIsCustom = (this.value !== lastAutoPrompt);
+            updateRegenBtn();
+        });
+
+        // Explicit "refresh from selections" button — forces overwrite even if customized
+        if (dom.regenPromptBtn) {
+            dom.regenPromptBtn.addEventListener('click', function() {
+                renderPrompt(state.shuffled, true);
+            });
+        }
     }
 
     // ==================== Init ====================
