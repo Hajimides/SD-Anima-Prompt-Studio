@@ -519,16 +519,16 @@ input[type="range"]::-webkit-slider-thumb {
     // If WebGL fails, body background #06080d shows through — still looks fine with vignette.
 
     // ==================== Constants ====================
-    var SAFE_ORDER = ['quality', 'style', 'character', 'clothing', 'actionTag', 'actionNatural', 'perspective', 'composition', 'background'];
-    var NSFW_ORDER = ['nsfwClothing', 'nsfwActionTag', 'nsfwActionNatural'];
-    var ALL_ORDER  = ['quality', 'style', 'character', 'clothing', 'actionTag', 'actionNatural', 'nsfwClothing', 'nsfwActionTag', 'nsfwActionNatural', 'perspective', 'composition', 'background'];
+    var SAFE_ORDER = ['quality', 'style', 'subject', 'character', 'clothing', 'actionTag', 'actionNatural', 'perspective', 'composition', 'background'];
+    var NSFW_ORDER = ['nsfwCharacter', 'nsfwClothing', 'nsfwExpression', 'nsfwActionTag', 'nsfwSpecial', 'nsfwActionNatural'];
+    var ALL_ORDER  = ['quality', 'style', 'subject', 'character', 'clothing', 'actionTag', 'actionNatural', 'perspective', 'composition', 'background', 'nsfwCharacter', 'nsfwClothing', 'nsfwExpression', 'nsfwActionTag', 'nsfwSpecial', 'nsfwActionNatural'];
 
     // ==================== i18n ====================
     const i18n = {
         'zh-CN': {
             pageTitle:'🎨 Prompt Studio', sidebarTitle:'Prompt Studio', sidebarSubtitle:'SD / Anima',
-            cat_quality:'质量', cat_style:'风格', cat_character:'人物', cat_clothing:'服装', cat_actionTag:'动作（Tag）', cat_actionNatural:'动作（自然语言）', cat_perspective:'角度', cat_composition:'构图', cat_background:'背景',
-            cat_nsfwClothing:'服装（NSFW）', cat_nsfwActionTag:'动作（NSFW）', cat_nsfwActionNatural:'动作（自然语言）（NSFW）',
+            cat_quality:'质量', cat_style:'风格', cat_subject:'主体/人数', cat_character:'人物', cat_clothing:'服装', cat_actionTag:'动作（Tag）', cat_actionNatural:'动作（自然语言）', cat_perspective:'角度', cat_composition:'构图', cat_background:'背景',
+            cat_nsfwCharacter:'人物（NSFW）', cat_nsfwClothing:'服装（NSFW）', cat_nsfwExpression:'表情反应（NSFW）', cat_nsfwActionTag:'动作（NSFW）', cat_nsfwSpecial:'特殊主题（NSFW）', cat_nsfwActionNatural:'动作（自然语言）（NSFW）',
             label_selectedGroups:'已选择提示词组', label_prompt:'组合后的 Prompt', label_clearAll:'清空所有', label_copy:'复制 Prompt', label_shuffle:'随机排序',
             label_nsfw:'NSFW', label_nsfwOn:'NSFW 已开启',
             badge_groups:'组', badge_words:'词', badge_chars:'字符',
@@ -560,8 +560,8 @@ input[type="range"]::-webkit-slider-thumb {
         },
         'zh-TW': {
             pageTitle:'🎨 Prompt Studio', sidebarTitle:'Prompt Studio', sidebarSubtitle:'SD / Anima',
-            cat_quality:'品質', cat_style:'風格', cat_character:'人物', cat_clothing:'服裝', cat_actionTag:'動作（Tag）', cat_actionNatural:'動作（自然語言）', cat_perspective:'角度', cat_composition:'構圖', cat_background:'背景',
-            cat_nsfwClothing:'服裝（NSFW）', cat_nsfwActionTag:'動作（NSFW）', cat_nsfwActionNatural:'動作（自然語言）（NSFW）',
+            cat_quality:'品質', cat_style:'風格', cat_subject:'主體/人數', cat_character:'人物', cat_clothing:'服裝', cat_actionTag:'動作（Tag）', cat_actionNatural:'動作（自然語言）', cat_perspective:'角度', cat_composition:'構圖', cat_background:'背景',
+            cat_nsfwCharacter:'人物（NSFW）', cat_nsfwClothing:'服裝（NSFW）', cat_nsfwExpression:'表情反應（NSFW）', cat_nsfwActionTag:'動作（NSFW）', cat_nsfwSpecial:'特殊主題（NSFW）', cat_nsfwActionNatural:'動作（自然語言）（NSFW）',
             label_selectedGroups:'已選擇提示詞組', label_prompt:'組合後的 Prompt', label_clearAll:'清空所有', label_copy:'複製 Prompt', label_shuffle:'隨機排序',
             label_nsfw:'NSFW', label_nsfwOn:'NSFW 已開啟',
             badge_groups:'組', badge_words:'詞', badge_chars:'字元',
@@ -593,8 +593,8 @@ input[type="range"]::-webkit-slider-thumb {
         },
         'en': {
             pageTitle:'🎨 Prompt Studio', sidebarTitle:'Prompt Studio', sidebarSubtitle:'SD / Anima',
-            cat_quality:'Quality', cat_character:'Character', cat_clothing:'Clothing', cat_actionTag:'Action (Tag)', cat_actionNatural:'Action (Natural)', cat_perspective:'Perspective', cat_composition:'Composition', cat_background:'Background',
-            cat_nsfwClothing:'Clothing (NSFW)', cat_nsfwActionTag:'Action (NSFW)', cat_nsfwActionNatural:'Action (Natural) (NSFW)',
+            cat_quality:'Quality', cat_style:'Style', cat_subject:'Subject / Count', cat_character:'Character', cat_clothing:'Clothing', cat_actionTag:'Action (Tag)', cat_actionNatural:'Action (Natural)', cat_perspective:'Perspective', cat_composition:'Composition', cat_background:'Background',
+            cat_nsfwCharacter:'Character (NSFW)', cat_nsfwClothing:'Clothing (NSFW)', cat_nsfwExpression:'Expression (NSFW)', cat_nsfwActionTag:'Action (NSFW)', cat_nsfwSpecial:'Special Themes (NSFW)', cat_nsfwActionNatural:'Action (Natural) (NSFW)',
             label_selectedGroups:'Selected Groups', label_prompt:'Combined Prompt', label_clearAll:'Clear All', label_copy:'Copy Prompt', label_shuffle:'Shuffle',
             label_nsfw:'NSFW', label_nsfwOn:'NSFW On',
             badge_groups:'groups', badge_words:'words', badge_chars:'chars',
@@ -668,6 +668,18 @@ input[type="range"]::-webkit-slider-thumb {
             {id:9,name:{'zh-CN':'半写实风格','zh-TW':'半寫實風格','en':'Semi-Realistic'},texts:['semi-realistic style','detailed yet stylized','soft shading','beautiful proportions','anime-realism hybrid']},
             {id:10,name:{'zh-CN':'卡通风格','zh-TW':'卡通風格','en':'Cartoon Style'},texts:['cartoon style','bold outlines','flat colors','exaggerated features','clean animation look']}
         ],
+
+        subject:[
+            {id:1,name:{'zh-CN':'单人女性主体','zh-TW':'單人女性主體','en':'Solo Female'},texts:['1girl','solo']},
+            {id:2,name:{'zh-CN':'单人男性主体','zh-TW':'單人男性主體','en':'Solo Male'},texts:['1boy','solo']},
+            {id:3,name:{'zh-CN':'双人异性互动','zh-TW':'雙人異性互動','en':'Male + Female Couple'},texts:['1girl','1boy','hetero']},
+            {id:4,name:{'zh-CN':'双人百合','zh-TW':'雙人百合','en':'Yuri Couple'},texts:['2girls','yuri']},
+            {id:5,name:{'zh-CN':'两男互动','zh-TW':'兩男互動','en':'Male + Male'},texts:['2boys']},
+            {id:6,name:{'zh-CN':'多人女性','zh-TW':'多人女性','en':'Multiple Girls'},texts:['multiple girls','Xgirls']},
+            {id:7,name:{'zh-CN':'多人混战/群交','zh-TW':'多人混戰/群交','en':'Group Sex'},texts:['multiple girls','multiple boys','group sex','Xgirls','Xboys']},
+            {id:8,name:{'zh-CN':'体型与年龄差','zh-TW':'體型與年齡差','en':'Size & Age Difference'},texts:['height difference','size difference','tall male','petite female','age difference','older male','younger female']}
+        ],
+
         character:[
             {id:1,name:{'zh-CN':'小鸟游星野','zh-TW':'小鳥遊星野','en':'Takanashi Hoshino'},texts:['Takanashi Hoshino','long pink hair','ahoge','prominent cowlick','heterochromia','blue left eye','orange right eye','small cute fang','purple halo'],imageUrl:'https://raw.githubusercontent.com/Hajimides/SD-Anima-Prompt-Studio/main/images/Takanashi_Hoshino.jpg'},
             {id:2,name:{'zh-CN':'空崎日奈','zh-TW':'空崎日奈','en':'Sorasaki Hina'},texts:['Sorasaki Hina','white hair','long wavy hair','knee-length hair','thigh-length hair','black and red ribbon','black ribbon','purple eyes','black horns with purple cracks','glowing purple horns','small bat wings on hips','small bat wings','petite body','short stature','flat chest','purple halo','demon halo'],imageUrl:'https://raw.githubusercontent.com/Hajimides/SD-Anima-Prompt-Studio/main/images/Sorasaki_Hina.jpg'},
@@ -677,9 +689,14 @@ input[type="range"]::-webkit-slider-thumb {
             {id:6,name:{'zh-CN':'优雅女性','zh-TW':'優雅女性','en':'Elegant Woman'},texts:['young woman','fair skin','delicate features','blue eyes'],imageUrl:'https://raw.githubusercontent.com/yourusername/sd-prompt-selector/main/images/char3.jpg'},
             {id:7,name:{'zh-CN':'可爱男孩','zh-TW':'可愛男孩','en':'Cute Boy'},texts:['1boy','cute boy','short hair','golden eyes'],imageUrl:'https://raw.githubusercontent.com/yourusername/sd-prompt-selector/main/images/char4.jpg'},
             {id:8,name:{'zh-CN':'精细面部','zh-TW':'精細面部','en':'Detailed Face'},texts:['detailed beautiful face','heterochromia','youthful appearance'],imageUrl:'https://raw.githubusercontent.com/yourusername/sd-prompt-selector/main/images/char5.jpg'},
-            {id:9,name:{'zh-CN':'Anima 发型与刘海 (ANIMA3 §7.1)','zh-TW':'Anima 髮型與劉海','en':'Anima Hair & Bangs'},texts:['long hair','very long hair','short hair','twintails','ponytail','braid','ahoge','bangs','hair between eyes','hair over one eye','sidelocks','fluffy hair','wavy hair']},
-            {id:10,name:{'zh-CN':'Anima 眼睛与特效 (ANIMA3 §7.2)','zh-TW':'Anima 眼睛與特效','en':'Anima Eyes & Effects'},texts:['blue eyes','red eyes','golden eyes','purple eyes','heterochromia','heart-shaped pupils','glowing eyes','slit pupils','detailed eyes','long eyelashes','rolling eyes','half-closed eyes']},
-            {id:11,name:{'zh-CN':'Anima 体型与非人特征 (ANIMA3 §7.3/7.5)','zh-TW':'Anima 體型與非人特徵','en':'Anima Body Types & Non-human'},texts:['petite','curvy','voluptuous','slim','loli','shota','muscular female','cat ears','fox ears','tail','demon horns','angel wings','elf ears','mechanical wings','colored skin','shiny skin']}
+            {id:9,name:{"zh-CN": "粉色长发双马尾可爱特征", "zh-TW": "粉色長髮雙馬尾可愛特徵", "en": "Pink Twin-tails Cute Features"},texts:["long pink hair", "twin tails", "ahoge", "small cute fang", "heterochromia"]},
+            {id:10,name:{"zh-CN": "兽耳尾巴幻想种族", "zh-TW": "獸耳尾巴幻想種族", "en": "Animal Ears & Tail Fantasy Race"},texts:["cat ears", "fox ears", "dog ears", "rabbit ears", "tail", "cat tail", "fox tail", "animal ear fluff"]},
+            {id:11,name:{"zh-CN": "巨乳细腰丰臀身材", "zh-TW": "巨乳細腰豐臀身材", "en": "Voluptuous Figure"},texts:["large breasts", "huge breasts", "narrow waist", "wide hips", "thick thighs"]},
+
+            {id:14,name:{"zh-CN": "心形瞳孔高潮特效", "zh-TW": "心形瞳孔高潮特效", "en": "Heart Pupils & Ecstasy Eyes"},texts:["heart-shaped pupils", "rolling eyes", "ahegao", "detailed eyes"]},
+            {id:15,name:{"zh-CN": "非人幻想特征组合", "zh-TW": "非人幻想特徵組合", "en": "Fantasy Non-human Features"},texts:["demon horns", "oni", "elf", "pointy ears", "dragon horns", "dragon tail", "wings", "halo", "succubus"]},
+            {id:16,name:{"zh-CN": "身体标记与纹身", "zh-TW": "身體標記與紋身", "en": "Body Markings & Tattoos"},texts:["tattoo", "intricate tattoos", "crotch tattoo", "body writing", "tally marks", "mole under eye", "piercing", "collarbone"]},
+            
         ],
         clothing:[
             {id:1,name:{'zh-CN':'优雅晚礼服','zh-TW':'優雅晚禮服','en':'Elegant Evening Dress'},texts:['emerald green silk evening gown','deep V-neckline','intricate bead embroidery','flowing tulle train','elegant silhouette']},
@@ -703,8 +720,6 @@ input[type="range"]::-webkit-slider-thumb {
             {id:19,name:{'zh-CN':'空崎日奈（礼服）','zh-TW':'空崎日奈（禮服）','en':'Sorasaki Hina(Dress)'},texts:['elegant dark purple evening gown','gradient purple dress with moon and stars pattern','sheer fabric at chest and skirt','purple long gloves','blue gem earrings and necklace']},
             {id:20,name:{'zh-CN':'圣园未花','zh-TW':'聖園未花','en':'Misono Mika'},texts:['sleeveless white dress with starry print and frills at the hem','high-waisted skirt overlay with golden buttons','gold trimmings and blue ribbons','blue bow with golden cross accessory at neckline','white capelet with golden trimmings','white pantyhose','black high heels with back ribbon']},
             {id:21,name:{'zh-CN':'圣园未花（泳装）','zh-TW':'聖園未花（泳裝）','en':'Misono Mika(Swimsuit)'},texts:['white one-piece swimsuit with gold celestial patterns','delicate gold trim','flowing sheer white beach cover-up','golden arm cuffs','white and gold halo']},
-            {id:22,name:{'zh-CN':'Anima 丝袜鞋类 (ANIMA3 §8.1)','zh-TW':'Anima 絲襪鞋類','en':'Anima Stockings & Footwear'},texts:['thighhighs','black thighhighs','white thighhighs','pantyhose','fishnets','fishnet thighhighs','torn pantyhose','high heels','stiletto heels','thigh boots','mary janes','loafers','barefoot']},
-            {id:23,name:{'zh-CN':'Anima 职业制服 (ANIMA3 §8.1)','zh-TW':'Anima 職業制服','en':'Anima Professional Uniforms'},texts:['school uniform','sailor uniform','serafuku','maid outfit','french maid','nurse','police uniform','office lady','miko outfit','kimono','bunny girl','waitress apron']}
         ],
         actionTag:[
             {id:1,name:{'zh-CN':'优雅站姿','zh-TW':'優雅站姿','en':'Standing Gracefully'},texts:['standing gracefully','full body','looking at viewer']},
@@ -716,8 +731,7 @@ input[type="range"]::-webkit-slider-thumb {
             {id:7,name:{'zh-CN':'回头凝视','zh-TW':'回頭凝視','en':'Looking Back'},texts:['looking back over shoulder','gentle smile','hair flowing','soft expression','eye contact']},
             {id:8,name:{'zh-CN':'头发飘动','zh-TW':'頭髮飄動','en':'Hair Flowing'},texts:['hair flowing in wind','dynamic hair','wind effect','hair strands floating','natural movement']},
             {id:9,name:{'zh-CN':'双手背后','zh-TW':'雙手背後','en':'Hands Behind Back'},texts:['hands behind back','relaxed pose','gentle smile','leaning slightly forward','innocent expression']},
-            {id:10,name:{'zh-CN':'微微前倾','zh-TW':'微微前傾','en':'Leaning Forward'},texts:['leaning forward slightly','curious expression','hands on knees','intimate distance','soft smile']},
-            {id:11,name:{'zh-CN':'Anima 单人诱惑姿态 (ANIMA3 §9.1.1 精选)','zh-TW':'Anima 單人誘惑姿態','en':'Anima Seductive Poses (Single)'},texts:['looking at viewer','half-closed eyes','licking lips','parted lips','hand on breast','hand between legs','spread legs','kneeling','on all fours','bending over','presenting','clothes pull by self','skirt lift by self','in heat','sweat']}
+            {id:10,name:{'zh-CN':'微微前倾','zh-TW':'微微前傾','en':'Leaning Forward'},texts:['leaning forward slightly','curious expression','hands on knees','intimate distance','soft smile']}
         ],
         actionNatural:[
             {id:1,name:{'zh-CN':'自然站立','zh-TW':'自然站立','en':'Standing Naturally'},texts:['standing naturally in a serene environment','soft breeze blowing through hair','relaxed and graceful posture']},
@@ -729,8 +743,7 @@ input[type="range"]::-webkit-slider-thumb {
             {id:7,name:{'zh-CN':'靠在窗边沉思','zh-TW':'靠在窗邊沉思','en':'Leaning on Window Deep in Thought'},texts:['leaning against the window frame','gazing into the distance','soft natural light on face','peaceful and contemplative expression','one hand resting on the glass']},
             {id:8,name:{'zh-CN':'漫步在花海中','zh-TW':'漫步在花海中','en':'Walking Through Flower Field'},texts:['walking gracefully through a field of flowers','petals gently falling around her','soft smile with eyes closed','dress flowing in the breeze','peaceful and dreamy atmosphere']},
             {id:9,name:{'zh-CN':'坐在窗台上看风景','zh-TW':'坐在窗臺上看風景','en':'Sitting on Windowsill Watching Scenery'},texts:['sitting elegantly on the windowsill','legs gently crossed','looking outside with a gentle smile','sunlight illuminating her face','calm and serene moment']},
-            {id:10,name:{'zh-CN':'伸展身体放松','zh-TW':'伸展身體放鬆','en':'Stretching Body Relaxed'},texts:['stretching arms above head','body arched gracefully','eyes closed in relaxation','soft morning light','peaceful and natural pose']},
-            {id:11,name:{'zh-CN':'Anima 姿态氛围自然 (ANIMA3 §9.1 启发)','zh-TW':'Anima 姿態氛圍自然','en':'Anima Pose Atmosphere Descriptions'},texts:['seductively presenting while blushing and avoiding direct eye contact','slowly undressing with trembling hands in dim light','arching back in pleasure with soft moans escaping','kneeling submissively with hands behind back and downcast eyes']}
+            {id:10,name:{'zh-CN':'伸展身体放松','zh-TW':'伸展身體放鬆','en':'Stretching Body Relaxed'},texts:['stretching arms above head','body arched gracefully','eyes closed in relaxation','soft morning light','peaceful and natural pose']}
         ],
         perspective:[
             {id:1,name:{'zh-CN':'低角度','zh-TW':'低角度','en':'Low Angle'},texts:['low angle shot','from below','dramatic low angle','looking up']},
@@ -743,8 +756,9 @@ input[type="range"]::-webkit-slider-thumb {
             {id:8,name:{'zh-CN':'特写镜头','zh-TW':'特寫鏡頭','en':'Close-up Shot'},texts:['extreme close-up','detailed face','focus on eyes and expression','shallow depth of field','intimate portrait']},
             {id:9,name:{'zh-CN':'广角全景','zh-TW':'廣角全景','en':'Wide Angle Shot'},texts:['wide angle shot','showing full environment','dramatic perspective','expansive view','cinematic wide shot']},
             {id:10,name:{'zh-CN':'荷兰角倾斜','zh-TW':'荷蘭角傾斜','en':'Dutch Angle'},texts:['dutch angle','dynamic tilted composition','sense of unease or energy','creative perspective','dramatic framing']},
-            {id:11,name:{'zh-CN':'Anima 景别与视角 (ANIMA3 §11)','zh-TW':'Anima 景別與視角','en':'Anima Shot Types & Angles'},texts:['close-up','cowboy shot','upper body','full body','portrait','from front','from side','from behind','from above','from below','profile','over shoulder','looking at viewer','facing away']},
-            {id:12,name:{'zh-CN':'Anima POV与聚焦 (ANIMA3 §11.3/11.6)','zh-TW':'Anima POV與聚焦','en':'Anima POV & Body Focus'},texts:['pov','male pov','female pov','first person view','breast focus','pussy focus','ass focus','foot focus','navel focus','armpit focus','face focus','thigh focus']}
+            {id:11,name:{"zh-CN": "体位专属后入视角", "zh-TW": "體位專屬後入視角", "en": "Doggystyle Specialized Angles"},texts:["from behind, top-down bottom-up", "from side, sex from behind", "over shoulder, looking back"]},
+            {id:12,name:{"zh-CN": "骑乘与抱起低角度", "zh-TW": "騎乘與抱起低角度", "en": "Cowgirl & Carry Low Angle"},texts:["from below, cowgirl position", "low angle, suspended congress", "looking up, legs lock"]},
+            
         ],
         composition:[
             {id:1,name:{'zh-CN':'居中构图','zh-TW':'居中構圖','en':'Centered'},texts:['centered composition','subject in the middle','symmetrical framing','balanced central focus']},
@@ -757,7 +771,8 @@ input[type="range"]::-webkit-slider-thumb {
             {id:8,name:{'zh-CN':'黄金分割','zh-TW':'黃金分割','en':'Golden Ratio'},texts:['golden ratio composition','fibonacci spiral','naturally pleasing placement','organic balance','professional photography rule']},
             {id:9,name:{'zh-CN':'景深效果','zh-TW':'景深效果','en':'Depth of Field'},texts:['shallow depth of field','beautiful bokeh','subject in sharp focus','blurred background','cinematic separation']},
             {id:10,name:{'zh-CN':'剪影构图','zh-TW':'剪影構圖','en':'Silhouette Composition'},texts:['strong silhouette','backlit subject','dramatic outline','minimal detail','powerful visual impact']},
-            {id:11,name:{'zh-CN':'Anima 构图与分镜 (ANIMA3 §11.4/11.7)','zh-TW':'Anima 構圖與分鏡','en':'Anima Framing & Storyboard'},texts:['split screen','comic panel','multiple panels','before and after','time progression','left panel','right panel','storyboard','dutch angle tilt','dynamic composition','leading lines in frame']}
+            {id:11,name:{"zh-CN": "焦点特写私处与足部", "zh-TW": "焦點特寫私處與足部", "en": "Groin & Feet Focus Composition"},texts:["groin focus", "pussy focus", "feet focus", "soles", "close-up, detailed skin"]},
+            
         ],
         background:[
             {id:1,name:{'zh-CN':'城市夜景','zh-TW':'城市夜景','en':'Cyberpunk Night City'},texts:['cyberpunk cityscape at night','neon-lit skyscrapers reflecting on wet streets','futuristic metropolis with holographic billboards','rain-slicked asphalt glowing with neon reflections','aerial view of sprawling night city with flying vehicles','dense urban canyon of glass and steel under purple night sky','cyberpunk alleyway with neon signs and steam vents']},
@@ -768,8 +783,9 @@ input[type="range"]::-webkit-slider-thumb {
             {id:6,name:{'zh-CN':'太空星云','zh-TW':'太空星雲','en':'Cosmic Nebula'},texts:['vast cosmic nebula with swirling purple and blue gas clouds','deep space scene with distant galaxies and star clusters','colorful supernova remnant with vibrant interstellar dust','nebula nursery with newborn stars illuminating surrounding gas','cosmic landscape with a ringed planet silhouetted against a nebula','stunning spiral galaxy with bright core and dust lanes','interstellar cloud of ionized gas in deep space']},
             {id:7,name:{'zh-CN':'传统中式庭院','zh-TW':'傳統中式庭院','en':'Traditional Chinese Garden'},texts:['traditional Chinese garden with moon gate and koi pond','serene Suzhou-style garden with winding covered walkways','classical Chinese courtyard with ancient pine and ornamental rocks','zen garden with raked gravel and moss-covered stones','Chinese scholar garden with bamboo grove and lotus pond','elegant pavilion overlooking a misty garden with cherry blossoms','Ming dynasty style garden with whitewashed walls and grey tile roofs']},
             {id:8,name:{'zh-CN':'雪山日出','zh-TW':'雪山日出','en':'Snowy Mountain Sunrise'},texts:['snow-covered mountain peak glowing in first light of dawn','alpine sunrise with golden alpenglow on pristine snow','winter mountain landscape with frosted pine trees at sunrise','majestic snowy summit bathed in warm morning light','crisp winter dawn over a frozen alpine lake with mountain backdrop','powder snow slope with sparkling ice crystals under sunrise','serene winter wilderness with snow-laden branches and pink dawn sky']},
-            {id:9,name:{'zh-CN':'Anima 室内场所 (ANIMA3 §12.1)','zh-TW':'Anima 室內場所','en':'Anima Indoor Locations'},texts:['bedroom','classroom','office','train interior','bathroom','kitchen','changing room','elevator','stairwell','living room','hotel room','dormitory']},
-            {id:10,name:{'zh-CN':'Anima 公共风险场所 (ANIMA3 §12.2)','zh-TW':'Anima 公共風險場所','en':'Anima Public/Risky Scenes'},texts:['public','outdoors','alley','rooftop','cinema','swimming pool','beach','school rooftop','empty classroom at night','office after hours','train at night','park at dusk']}
+            {id:9,name:{"zh-CN": "爱酒店与公共风险场所", "zh-TW": "愛酒店與公共風險場所", "en": "Love Hotel & Risky Public"},texts:["love hotel", "public toilet stall", "train interior", "crowded", "onsen", "beach at night", "rooftop", "alley"]},
+            {id:10,name:{"zh-CN": "地牢与拘束场景", "zh-TW": "地牢與拘束場景", "en": "Dungeon & Restraint Setting"},texts:["dungeon", "stone walls", "chains", "dim lighting", "pillory", "glory hole wall"]},
+            
         ],
         nsfwClothing:[
             {id:1,name:{'zh-CN':'白色Babydoll内衣','zh-TW':'白色Babydoll内衣','en':'White Babydoll Lingerie'},texts:['delicate white sheer babydoll lingerie set','intricate floral lace trim','thin adjustable spaghetti straps','semi-transparent flowing fabric','matching lace panties']},
@@ -787,11 +803,17 @@ input[type="range"]::-webkit-slider-thumb {
             {id:13,name:{'zh-CN':'吊带袜套装','zh-TW':'吊帶襪套裝','en':'Garter Stockings Set'},texts:['black lace garter belt','sheer thighhigh stockings','matching panties','suspender straps','elegant and seductive']},
             {id:14,name:{'zh-CN':'微型裙装','zh-TW':'微型裙裝','en':'Micro Skirt Set'},texts:['extremely short micro skirt','crop top','underboob exposure','thong visible','playful and revealing']},
             {id:15,name:{'zh-CN':'完全裸体','zh-TW':'完全裸體','en':'Completely Nude'},texts:['completely nude','no clothing','detailed skin texture','natural body','artistic nude']},
-            {id:16,name:{'zh-CN':'Anima 透明透视改造 (ANIMA3 §8.4.1)','zh-TW':'Anima 透明透視改造','en':'Anima See-through & Transparent'},texts:['see-through','transparent','sheer','translucent','see-through shirt','wet clothes','nipples visible through clothes','clear transparent raincoat','see-through leotard','glossy pvc']},
-            {id:17,name:{'zh-CN':'Anima 裁剪镂空暴露 (ANIMA3 §8.4.2-8.4.3)','zh-TW':'Anima 裁剪鏤空暴露','en':'Anima Cropped & Cutout Exposure'},texts:['crop top','micro skirt','micro shorts','highleg','side slit','cleavage cutout','underboob cutout','navel cutout','crotch cutout','crotchless','sideboob','backless']},
-            {id:18,name:{'zh-CN':'Anima 破损裸露反差 (ANIMA3 §8.4.4/8.4.6)','zh-TW':'Anima 破損裸露反差','en':'Anima Torn & Naked Contrast'},texts:['torn clothes','ripped clothes','torn pantyhose','damaged clothes','naked jacket','naked apron','naked kimono','completely nude + police hat','completely nude + maid headdress','off shoulder','one leg out']},
-            {id:19,name:{'zh-CN':'Anima 胶衣乳胶紧身 (ANIMA3 §8.4.5)','zh-TW':'Anima 膠衣乳膠緊身','en':'Anima Latex & PVC Bodysuit'},texts:['latex','rubber','pvc','latex bodysuit','latex catsuit','shiny','skintight','second skin','latex gloves','latex thighhighs','glossy']},
-            {id:20,name:{'zh-CN':'Anima 束缚道具 (ANIMA3 §8.6)','zh-TW':'Anima 束縛道具','en':'Anima Bondage & Toys'},texts:['collar','choker','leash','handcuffs','ropes','blindfold','ball gag','vibrator','dildo','nipple clamps','body writing','tally marks']}
+            {id:16,name:{"zh-CN": "半脱状态包", "zh-TW": "半脫狀態包", "en": "Partially Undressed Bundle"},texts:["open shirt", "clothes lift", "dress lift", "skirt lift", "bra lift", "panties aside", "partially undressed"]},
+            {id:17,name:{"zh-CN": "湿身透视诱惑", "zh-TW": "濕身透視誘惑", "en": "Wet See-through Seduction"},texts:["wet clothes", "see-through", "wet skin", "steaming body", "sheer", "clinging fabric"]},
+            {id:18,name:{"zh-CN": "破损凌乱状态", "zh-TW": "破損凌亂狀態", "en": "Torn & Disheveled"},texts:["torn clothes", "torn pantyhose", "ripped", "hole", "asymmetrical clothes"]},
+            {id:19,name:{"zh-CN": "全裸与暴露状态", "zh-TW": "全裸與暴露狀態", "en": "Fully Nude & Exposed"},texts:["completely nude", "topless", "bottomless", "no panties", "no bra", "naked apron"]},
+            {id:20,name:{"zh-CN": "兔女郎套装", "zh-TW": "兔女郎套裝", "en": "Bunny Girl Outfit"},texts:["black bunny girl leotard", "white bunny ears", "black bow tie", "fishnet stockings", "high heels", "bunny tail"]},
+            {id:21,name:{"zh-CN": "法式女仆情趣", "zh-TW": "法式女僕情趣", "en": "French Maid Lingerie"},texts:["sexy french maid lingerie", "low cut top", "frilly apron", "short skirt with garter", "thighhigh stockings"]},
+            {id:22,name:{"zh-CN": "乳胶/皮革紧身", "zh-TW": "乳膠/皮革緊身", "en": "Latex & Leather Bodysuit"},texts:["latex bodysuit", "black leather harness", "strappy body harness", "shiny clothes"]},
+            {id:23,name:{"zh-CN": "学校泳装湿身", "zh-TW": "學校泳裝濕身", "en": "School Swimsuit Wet"},texts:["classic school swimsuit", "sukumizu", "tight fitting navy blue", "white name tag on chest", "wet fabric clinging to body"]},
+            {id:24,name:{"zh-CN": "微型比基尼暴露", "zh-TW": "微型比基尼暴露", "en": "Micro Bikini Extreme"},texts:["tiny red string micro bikini", "minimal coverage", "side-tie bottoms", "glossy wet look fabric"]},
+            {id:25,name:{"zh-CN": "透明睡裙/比基尼", "zh-TW": "透明睡裙/比基尼", "en": "Sheer Nightgown & Transparent Bikini"},texts:["completely sheer white nightgown", "see-through fabric", "completely transparent micro bikini", "nothing underneath"]},
+            
         ],
         nsfwActionTag:[
             {id:1,name:{'zh-CN':'诱惑姿势','zh-TW':'誘惑姿勢','en':'Seductive Pose'},texts:['seductive pose','hand on breast','arching back','looking at viewer with bedroom eyes','parted lips']},
@@ -809,10 +831,18 @@ input[type="range"]::-webkit-slider-thumb {
             {id:13,name:{'zh-CN':'后入姿势','zh-TW':'後入姿勢','en':'From Behind Pose'},texts:['from behind','doggy style','looking back','ass up','hair pulled']},
             {id:14,name:{'zh-CN':'骑乘位','zh-TW':'騎乘位','en':'Cowgirl Position'},texts:['cowgirl position','straddling','hands on chest','riding motion','ecstatic expression']},
             {id:15,name:{'zh-CN':'潮吹表情','zh-TW':'潮吹表情','en':'Squirting Expression'},texts:['squirting','intense orgasm face','body trembling','eyes rolled back','fluids visible']},
-            {id:16,name:{'zh-CN':'Anima 单人暴露与自慰 (ANIMA3 §9.1.2-9.1.3)','zh-TW':'Anima 單人暴露與自慰','en':'Anima Exposure & Masturbation'},texts:['accidental exposure','wet clothes','nipples slip','upskirt','no panties','bottomless','pussy visible','fingering','vibrator','dildo','spread legs','m legs','panties aside','clothed masturbation','on all fours','squatting']},
-            {id:17,name:{'zh-CN':'Anima 前戏动作 (ANIMA3 §9.2 精选)','zh-TW':'Anima 前戲動作','en':'Anima Foreplay Actions'},texts:['fellatio','oral','deepthroat','licking','footjob','foot on penis','thighjob','paizuri','handjob','fingering partner','cunnilingus','kissing','teasing','dominating','submissive']},
-            {id:18,name:{'zh-CN':'Anima 正戏体位 (ANIMA3 §9.3 核心)','zh-TW':'Anima 正戲體位','en':'Anima Sex Positions'},texts:['missionary','doggystyle','cowgirl position','standing sex','prone bone','spooning','lotus position','from behind','against wall','on table','mating press','full nelson','piledriver']},
-            {id:19,name:{'zh-CN':'Anima 特殊体位/主题 (ANIMA3 §9.3.8-9.3.11 精选)','zh-TW':'Anima 特殊體位','en':'Anima Special/Extreme Poses'},texts:['sleeping sex','unconscious','hypnosis','empty eyes','pegging','facesitting','trampling','choke hold','rough sex','femdom','ahegao','mind break','public use']}
+            {id:16,name:{"zh-CN": "Ahegao高潮表情集", "zh-TW": "Ahegao高潮表情集", "en": "Ahegao Orgasm Face Set"},texts:["ahegao", "tongue out", "crossed eyes", "heart-shaped pupils", "rolling eyes", "drooling heavily", "fucked silly"]},
+            {id:17,name:{"zh-CN": "液体与潮吹反应", "zh-TW": "液體與潮吹反應", "en": "Fluids & Squirting Reactions"},texts:["pussy juice", "pussy juice trail", "pussy juice puddle", "squirting", "female ejaculation", "excessive cum", "cum pool", "creampie", "cum on body"]},
+            {id:18,name:{"zh-CN": "诱惑与羞耻表情", "zh-TW": "誘惑與羞恥表情", "en": "Seductive & Embarrassed Expressions"},texts:["seductive smile", "blush", "nose blush", "embarrassed", "nervous", "heavy breathing", "biting lip", "heart-shaped pupils"]},
+            {id:19,name:{"zh-CN": "跪姿口交深度", "zh-TW": "跪姿口交深度", "en": "Kneeling Deepthroat"},texts:["kneeling", "fellatio", "deepthroat", "throat bulge", "looking up", "hands on thighs"]},
+            {id:20,name:{"zh-CN": "后入经典姿势", "zh-TW": "後入經典姿勢", "en": "Classic Doggystyle"},texts:["doggystyle", "sex from behind", "all fours", "arched back", "looking back", "ass up"]},
+            {id:21,name:{"zh-CN": "骑乘位主动", "zh-TW": "騎乘位主动", "en": "Cowgirl Active"},texts:["cowgirl position", "girl on top", "straddling", "grinding", "hands on chest"]},
+            {id:22,name:{"zh-CN": "传教士与种付", "zh-TW": "傳教士與種付", "en": "Missionary & Mating Press"},texts:["missionary", "mating press", "legs up", "folded", "deep penetration", "boy on top"]},
+            {id:23,name:{"zh-CN": "足交与腿交", "zh-TW": "足交與腿交", "en": "Footjob & Thigh Sex"},texts:["footjob", "two-footed footjob", "thigh sex", "grinding", "solejob", "foot on penis"]},
+            {id:24,name:{"zh-CN": "多人前后夹击", "zh-TW": "多人前後夾擊", "en": "Spitroast & Group"},texts:["spitroast", "2boys", "blowjob", "sex from behind", "group sex", "triple penetration"]},
+            {id:25,name:{"zh-CN": "自慰与暴露展示", "zh-TW": "自慰與暴露展示", "en": "Masturbation & Exposure Display"},texts:["fingering", "masturbation", "legs spread", "pussy focus", "clothes lift", "groin", "presenting"]},
+            {id:26,name:{"zh-CN": "攻守反转支配", "zh-TW": "攻守反轉支配", "en": "Femdom Reversal"},texts:["pegging", "facesitting", "trampling", "sitting on face", "female domination", "male submission"]},
+            
         ],
         nsfwActionNatural:[
             {id:1,name:{'zh-CN':'躺在床上诱惑地看着你','zh-TW':'躺在床上誘惑地看著你','en':'Lying on bed seductively looking at you'},texts:['lying on her back on luxurious silk sheets','legs slightly parted','one arm raised above head','gently biting lower lip','inviting gaze directly at viewer']},
@@ -830,8 +860,42 @@ input[type="range"]::-webkit-slider-thumb {
             {id:13,name:{'zh-CN':'坐在你腿上面对面','zh-TW':'坐在你腿上面對面','en':'Sitting on your lap facing you'},texts:['straddling viewer\'s lap','facing forward','arms wrapped around neck','gentle grinding motion','intimate eye contact and soft breathing']},
             {id:14,name:{'zh-CN':'双手撑墙后背对镜','zh-TW':'雙手撐牆後背對鏡','en':'Hands on wall with back facing mirror'},texts:['standing with hands pressed against the wall','back arched','looking at her own reflection in mirror','ass pushed out','flushed expression']},
             {id:15,name:{'zh-CN':'躺在床上双腿大开邀请','zh-TW':'躺在床上雙腿大開邀請','en':'Lying on bed with legs wide open invitingly'},texts:['lying on back with legs spread extremely wide','hands holding her own thighs','completely exposed and inviting','soft inviting smile','eyes full of desire']},
-            {id:16,name:{'zh-CN':'Anima 暴露反差自然描述 (ANIMA3 §9.1.2 启发)','zh-TW':'Anima 暴露反差自然描述','en':'Anima Exposure Contrast Descriptions'},texts:['accidentally exposing herself while reaching for something','wet clothes clinging transparently after rain','nervously trying to cover up in public','looking back in embarrassment as skirt lifts in wind','completely exposed yet still wearing signature accessories']},
-            {id:17,name:{'zh-CN':'Anima 事后余韵自然描述 (ANIMA3 §14.9 启发)','zh-TW':'Anima 事後餘韻自然描述','en':'Anima Afterglow Descriptions'},texts:['lying exhausted with satisfied expression and visible fluids','slowly catching breath while cum drips','soft afterglow smile with messy hair and marks on skin','resting in a daze after intense climax','trembling slightly in lingering pleasure']}
+            // --- ANIMA3 新增 (2026-05-28) ---
+            {id:16,name:{"zh-CN": "电车无意识领口露出自然语", "zh-TW": "電車無意識領口露出自然語", "en": "Train Accidental Exposure Natural"},texts:["from side, accidental exposure, downblouse, train interior, areolae slip, loose clothes, dress shirt, shoulder bag, holding phone, nervous expression"]},
+            {id:17,name:{"zh-CN": "出浴薄纱透视自然语", "zh-TW": "出浴薄紗透視自然語", "en": "Post-bath Sheer Silhouette Natural"},texts:["close-up, see-through silhouette, shawl, nude, wet hair, standing, groin, wet skin, steam, fog, condensation, soft lighting"]},
+            {id:18,name:{"zh-CN": "裸体围裙日常反差自然语", "zh-TW": "裸體圍裙日常反差自然語", "en": "Naked Apron Daily Life Natural"},texts:["naked apron, bottomless, cooking, kitchen, casual, holding cooking pot, looking back, natural morning light, domestic atmosphere"]},
+            {id:19,name:{"zh-CN": "经典后入激烈自然语", "zh-TW": "經典後入激烈自然語", "en": "Intense Doggystyle Natural"},texts:["all fours, on bed, sex from behind, doggystyle, arm support, motion lines, rough sex, arched back, hair pulled, intense pleasure"]},
+            {id:20,name:{"zh-CN": "骑乘位主动扭动自然语", "zh-TW": "騎乘位主動扭動自然語", "en": "Active Cowgirl Grinding Natural"},texts:["cowgirl position, girl on top, straddling, leaning forward, grinding, motion lines, sweat, hands on chest, ecstatic expression"]},
+            {id:21,name:{"zh-CN": "传教士压腿深插自然语", "zh-TW": "傳教士壓腿深插自然語", "en": "Missionary Legs Pressed Natural"},texts:["missionary, legs up, folded, leg grab, deep penetration, on back, on bed, motion lines, heavy breathing, eye contact"]},
+            {id:22,name:{"zh-CN": "隐奸上身正常下身激烈自然语", "zh-TW": "隱奸上身正常下身激烈自然語", "en": "Stealth Sex Upper Body Normal Natural"},texts:["upper body normal, smile, drinking, restaurant, table, under table, no panties, sex from behind, pussy juice trail, legs trembling, head out of frame"]},
+            {id:23,name:{"zh-CN": "大姐姐骑乘教学自然语", "zh-TW": "大姐姐騎乘教學自然語", "en": "Onee-shota Teaching Cowgirl Natural"},texts:["onee-shota, girl on top, cowgirl position, mature female, large breasts, shota, small penis, teaching, height difference, gentle guidance, flushed face"]},
+            {id:24,name:{"zh-CN": "口球后手缚束缚自然语", "zh-TW": "口球後手縛束縛自然語", "en": "Ball Gag & Shibari Natural"},texts:["shibari, arms behind back, bound arms, bound torso, red rope, ball gag, drooling, saliva trail, kneeling, nude, tears, struggling, rope marks"]},
+            {id:25,name:{"zh-CN": "触手拘束产卵自然语", "zh-TW": "觸手拘束產卵自然語", "en": "Tentacle Bondage Oviposition Natural"},texts:["tentacles, bound by tentacles, tentacle sex, multiple tentacles, suspended, oviposition, ahegao, tentacle egg, mind break expression"]}
+        ],
+
+        // ==================== 新增 NSFW 分类 (仅在 NSFW 模式可见) ====================
+        nsfwCharacter:[
+            {id:1,name:{"zh-CN": "扶她特征包", "zh-TW": "扶她特徵包", "en": "Futanari Features"},texts:["futanari", "huge penis", "gigantic penis", "erection", "penis and vagina", "large breasts"]},
+            {id:2,name:{"zh-CN": "男娘/伪娘特征", "zh-TW": "男娘/偽娘特徵", "en": "Femboy / Trap Features"},texts:["otoko no ko", "femboy", "trap", "small penis", "tiny penis", "flat breasts", "androgynous", "crossdressing"]},
+            {id:3,name:{"zh-CN": "巨乳私处重点强调", "zh-TW": "巨乳私處重點強調", "en": "Explicit Body Focus"},texts:["large breasts", "puffy nipples", "pussy", "detailed pussy", "wide hips", "thick thighs", "cameltoe"]},
+            {id:4,name:{"zh-CN": "兽耳扶她/非人种族", "zh-TW": "獸耳扶她/非人種族", "en": "Fantasy NSFW Race"},texts:["cat ears", "fox ears", "futanari", "tail", "succubus", "demon horns", "wings"]}
+        ],
+
+        nsfwExpression:[
+            {id:1,name:{"zh-CN": "Ahegao高潮表情集", "zh-TW": "Ahegao高潮表情集", "en": "Ahegao Orgasm Face Set"},texts:["ahegao", "tongue out", "crossed eyes", "heart-shaped pupils", "rolling eyes", "drooling heavily", "fucked silly"]},
+            {id:2,name:{"zh-CN": "液体与潮吹反应", "zh-TW": "液體與潮吹反應", "en": "Fluids & Squirting Reactions"},texts:["pussy juice", "pussy juice trail", "pussy juice puddle", "squirting", "female ejaculation", "excessive cum", "cum pool", "creampie", "cum on body"]},
+            {id:3,name:{"zh-CN": "诱惑与羞耻表情", "zh-TW": "誘惑與羞恥表情", "en": "Seductive & Embarrassed Expressions"},texts:["seductive smile", "blush", "nose blush", "embarrassed", "nervous", "heavy breathing", "biting lip"]}
+        ],
+
+        nsfwSpecial:[
+            {id:1,name:{"zh-CN": "隐奸/偷窥主题", "zh-TW": "隱奸/偷窺主題", "en": "Stealth & Voyeur Themes"},texts:["stealth sex", "hidden sex", "from outside", "through window", "peeping", "risk of discovery", "upper body normal"]},
+            {id:2,name:{"zh-CN": "束缚与调教主题", "zh-TW": "束縛與調教主題", "en": "Bondage & Training Themes"},texts:["shibari", "ball gag", "collar", "leash", "rope marks", "bound arms", "puppy play", "on all fours"]},
+            {id:3,name:{"zh-CN": "NTR与堕落主题", "zh-TW": "NTR與墮落主題", "en": "NTR & Corruption Themes"},texts:["netorare", "cuckold", "talking on phone", "corrupted", "mind break", "ahegao", "heart-shaped pupils"]},
+            {id:4,name:{"zh-CN": "触手/异种主题", "zh-TW": "觸手/異種主題", "en": "Tentacle & Monster Themes"},texts:["tentacles", "tentacle sex", "oviposition", "monster", "orc", "stomach bulge"]},
+            {id:5,name:{"zh-CN": "大车/胁迫主题", "zh-TW": "大車/胁迫主題", "en": "Age Difference & Coercion"},texts:["onee-shota", "shota", "blackmail", "reluctant", "power imbalance"]},
+            {id:6,name:{"zh-CN": "RBQ/物化主题", "zh-TW": "RBQ/物化主題", "en": "Public Use / Objectification"},texts:["human toilet", "bukkake", "excessive cum", "cum pool", "public use", "body writing", "tally marks", "empty eyes"]},
+            {id:7,name:{"zh-CN": "事后痕迹主题", "zh-TW": "事後痕跡主題", "en": "After Sex Aftermath"},texts:["after sex", "exhausted", "cum on body", "used condom", "messy hair", "afterglow", "ashamed"]},
+            {id:8,name:{"zh-CN": "另类日常反差", "zh-TW": "另類日常反差", "en": "Casual Daily Life with Sex"},texts:["naked apron", "playing games", "implied sex", "casual", "domestic atmosphere", "expressionless"]}
         ]
     };
 
@@ -839,6 +903,7 @@ input[type="range"]::-webkit-slider-thumb {
     var categoryMeta = {
         quality:{icon:'✨',color:'indigo', accentBg:'bg-indigo-500/10', accentText:'text-indigo-300', accentBorder:'border-indigo-500/30', accentDot:'bg-indigo-400'},
         style:{icon:'🖼️',color:'amber', accentBg:'bg-amber-500/10', accentText:'text-amber-300', accentBorder:'border-amber-500/30', accentDot:'bg-amber-400'},
+        subject:{icon:'👥',color:'sky', accentBg:'bg-sky-500/10', accentText:'text-sky-300', accentBorder:'border-sky-500/30', accentDot:'bg-sky-400'},
         character:{icon:'👤',color:'purple', accentBg:'bg-purple-500/10', accentText:'text-purple-300', accentBorder:'border-purple-500/30', accentDot:'bg-purple-400'},
         clothing:{icon:'👗',color:'pink', accentBg:'bg-pink-500/10', accentText:'text-pink-300', accentBorder:'border-pink-500/30', accentDot:'bg-pink-400'},
         actionTag:{icon:'🏃',color:'emerald', accentBg:'bg-emerald-500/10', accentText:'text-emerald-300', accentBorder:'border-emerald-500/30', accentDot:'bg-emerald-400'},
@@ -846,9 +911,12 @@ input[type="range"]::-webkit-slider-thumb {
         perspective:{icon:'📐',color:'teal', accentBg:'bg-teal-500/10', accentText:'text-teal-300', accentBorder:'border-teal-500/30', accentDot:'bg-teal-400'},
         composition:{icon:'🖼️',color:'cyan', accentBg:'bg-cyan-500/10', accentText:'text-cyan-300', accentBorder:'border-cyan-500/30', accentDot:'bg-cyan-400'},
         background:{icon:'🏞️',color:'emerald', accentBg:'bg-emerald-500/10', accentText:'text-emerald-300', accentBorder:'border-emerald-500/30', accentDot:'bg-emerald-400'},
+        nsfwCharacter:{icon:'👤',color:'rose', accentBg:'bg-rose-500/10', accentText:'text-rose-300', accentBorder:'border-rose-500/30', accentDot:'bg-rose-400'},
         nsfwClothing:{icon:'👙',color:'rose', accentBg:'bg-rose-500/10', accentText:'text-rose-300', accentBorder:'border-rose-500/30', accentDot:'bg-rose-400'},
+        nsfwExpression:{icon:'😳',color:'orange', accentBg:'bg-orange-500/10', accentText:'text-orange-300', accentBorder:'border-orange-500/30', accentDot:'bg-orange-400'},
         nsfwActionTag:{icon:'💋',color:'orange', accentBg:'bg-orange-500/10', accentText:'text-orange-300', accentBorder:'border-orange-500/30', accentDot:'bg-orange-400'},
-        nsfwActionNatural:{icon:'🔞',color:'violet', accentBg:'bg-violet-500/10', accentText:'text-violet-300', accentBorder:'border-violet-500/30', accentDot:'bg-violet-400'}
+        nsfwSpecial:{icon:'🔞',color:'violet', accentBg:'bg-violet-500/10', accentText:'text-violet-300', accentBorder:'border-violet-500/30', accentDot:'bg-violet-400'},
+        nsfwActionNatural:{icon:'📝',color:'violet', accentBg:'bg-violet-500/10', accentText:'text-violet-300', accentBorder:'border-violet-500/30', accentDot:'bg-violet-400'}
     };
 
     var tagUnselectedCls = {
@@ -859,6 +927,7 @@ input[type="range"]::-webkit-slider-thumb {
         teal:'glass text-zinc-300 border-white/5 hover:border-teal-500/30 hover:bg-teal-500/5',
         amber:'glass text-zinc-300 border-white/5 hover:border-amber-500/30 hover:bg-amber-500/5',
         cyan:'glass text-zinc-300 border-white/5 hover:border-cyan-500/30 hover:bg-cyan-500/5',
+        sky:'glass text-zinc-300 border-white/5 hover:border-sky-500/30 hover:bg-sky-500/5',  // for subject category
         rose:'glass text-zinc-300 border-white/5 hover:border-rose-500/30 hover:bg-rose-500/5',
         orange:'glass text-zinc-300 border-white/5 hover:border-orange-500/30 hover:bg-orange-500/5',
         violet:'glass text-zinc-300 border-white/5 hover:border-violet-500/30 hover:bg-violet-500/5'
@@ -872,6 +941,7 @@ input[type="range"]::-webkit-slider-thumb {
         teal:'bg-teal-500/20 text-teal-200 border-teal-500/40 shadow-lg shadow-teal-500/10',
         amber:'bg-amber-500/20 text-amber-200 border-amber-500/40 shadow-lg shadow-amber-500/10',
         cyan:'bg-cyan-500/20 text-cyan-200 border-cyan-500/40 shadow-lg shadow-cyan-500/10',
+        sky:'bg-sky-500/20 text-sky-200 border-sky-500/40 shadow-lg shadow-sky-500/10',
         rose:'bg-rose-500/20 text-rose-200 border-rose-500/40 shadow-lg shadow-rose-500/10',
         orange:'bg-orange-500/20 text-orange-200 border-orange-500/40 shadow-lg shadow-orange-500/10',
         violet:'bg-violet-500/20 text-violet-200 border-violet-500/40 shadow-lg shadow-violet-500/10'
@@ -885,6 +955,7 @@ input[type="range"]::-webkit-slider-thumb {
         teal:'bg-teal-500/10 text-teal-200 border-teal-500/20',
         amber:'bg-amber-500/10 text-amber-200 border-amber-500/20',
         cyan:'bg-cyan-500/10 text-cyan-200 border-cyan-500/20',
+        sky:'bg-sky-500/10 text-sky-200 border-sky-500/20',
         rose:'bg-rose-500/10 text-rose-200 border-rose-500/20',
         orange:'bg-orange-500/10 text-orange-200 border-orange-500/20',
         violet:'bg-violet-500/10 text-violet-200 border-violet-500/20'
@@ -903,6 +974,7 @@ input[type="range"]::-webkit-slider-thumb {
         var obj = {};
         for (var i = 0; i < ALL_ORDER.length; i++) { obj[ALL_ORDER[i]] = false; }
         obj.quality = true;
+        obj.subject = true;
         return obj;
     }
 
@@ -1432,7 +1504,7 @@ input[type="range"]::-webkit-slider-thumb {
     function handleNsfwToggle() {
     if (state.nsfwEnabled) {
         // ========== 关键修复：关闭 NSFW 前清除所有 NSFW 分组的选中项 ==========
-        const nsfwCategories = ['nsfwClothing', 'nsfwActionTag', 'nsfwActionNatural'];
+        const nsfwCategories = ['nsfwCharacter', 'nsfwClothing', 'nsfwExpression', 'nsfwActionTag', 'nsfwSpecial', 'nsfwActionNatural'];
         for (let cat of nsfwCategories) {
             if (state.selectedGroups[cat]) {
                 state.selectedGroups[cat].clear();
