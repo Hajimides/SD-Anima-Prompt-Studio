@@ -1,0 +1,29 @@
+#shaderCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+#vignetteOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(4, 6, 12, 0.55) 85%,
+    rgba(2, 3, 6, 0.8) 100%
+  );
+}
+
+.webgl-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 30% 20%, #1a1a2e 0%, #06080d 60%);
+}

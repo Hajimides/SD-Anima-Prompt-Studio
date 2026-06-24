@@ -1,0 +1,18 @@
+{
+  "quality": { "icon": "✨", "color": "indigo" },
+  "style": { "icon": "🖼️", "color": "amber" },
+  "subject": { "icon": "👥", "color": "sky" },
+  "character": { "icon": "👤", "color": "purple" },
+  "clothing": { "icon": "👗", "color": "pink" },
+  "actionTag": { "icon": "🏃", "color": "emerald" },
+  "actionNatural": { "icon": "📝", "color": "teal" },
+  "perspective": { "icon": "📐", "color": "teal" },
+  "composition": { "icon": "🖼️", "color": "cyan" },
+  "background": { "icon": "🏞️", "color": "emerald" },
+  "nsfwCharacter": { "icon": "👤", "color": "rose" },
+  "nsfwClothing": { "icon": "👙", "color": "rose" },
+  "nsfwExpression": { "icon": "😳", "color": "orange" },
+  "nsfwActionTag": { "icon": "💋", "color": "orange" },
+  "nsfwSpecial": { "icon": "🔞", "color": "violet" },
+  "nsfwActionNatural": { "icon": "📝", "color": "violet" }
+}
