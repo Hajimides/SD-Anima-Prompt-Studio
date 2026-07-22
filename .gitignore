@@ -1,0 +1,9 @@
+/optimized-v2/node_modules/
+/optimized-v2/dist/
+/optimized-v2/*.log
+
+.env
+.env.*
+!.env.example
+*.pem
+*.key

@@ -1,0 +1,110 @@
+/* Sidebar active indicator */
+.sidebar-item {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 2px solid transparent;
+}
+
+.sidebar-item.active {
+  border-left-color: var(--accent);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.sidebar-item:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Card transitions */
+.tag-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.tag-card:hover {
+  transform: translateY(-2px);
+}
+
+.tag-card:active {
+  transform: scale(0.96);
+}
+
+.char-card-music {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.char-card-music:hover {
+  transform: translateY(-4px);
+}
+
+.char-card-music:active {
+  transform: scale(0.97);
+}
+
+/* Selected chip */
+.selected-chip-v10 {
+  animation: fadeIn 0.25s ease-out;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.selected-chip-v10:hover {
+  transform: translateY(-1px);
+}
+
+/* Copy pulse */
+@keyframes copyPulseV10 {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 16px rgba(99, 102, 241, 0);
+  }
+}
+
+.copy-pulse-v10 {
+  animation: copyPulseV10 0.7s ease-out;
+}
+
+/* Range slider styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #6366f1;
+  cursor: pointer;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+}
+
+/* Settings Modal */
+.settings-modal {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Search no results */
+.search-no-results-v10 {
+  text-align: center;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.875rem;
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.75rem;
+}
